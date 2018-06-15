@@ -1,6 +1,6 @@
 {
   "name": "node-image-hash",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Perceptual image hash for node.js",
   "main": "index.js",
   "scripts": {

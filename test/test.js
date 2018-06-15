@@ -120,3 +120,13 @@ it('Buffer input should be the same as file path input', function() {
       assert.equal(res[0].hash, res[1].hash);
     });
 });
+
+it('Async should be the same as sync', function() {
+  const h1 = imageHash.hash(__dirname + '/files/absolut1', 64);
+  const h2 = imageHash.syncHash(__dirname + '/files/absolut1', 64);
+  return Promise
+    .all([h1, h2])
+    .then((res) => {
+      assert.equal(res[0].hash, res[1].hash);
+    });
+});

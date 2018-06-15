@@ -29,7 +29,7 @@ Returns: ES6 `Promise`, resolved returns hash string in specified format and len
 Parameters:
 
 * `filepath` - path to the image, or `Buffer`
-* `bits` (optional) - hash length [default: `256`]
+* `bits` (optional) - hash length [default: `64`]
 * `format` (optional) - output format [default: `hex`] (Available: `hex`, `latin1`, `base64`, `binary`)
 
 
