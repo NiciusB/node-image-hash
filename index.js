@@ -1,7 +1,9 @@
 const imghash = require('imghash')
 const fs = require('fs')
 const crypto = require('crypto')
-const child_process = require('child_process');
+const WorkersManager = require('./workersManager')
+
+require('events').EventEmitter.prototype._maxListeners = 1000;
 
 async function getImageHash(imageBuffer, blockhashSize = 256, format = 'hex') {
   if (!Buffer.isBuffer(imageBuffer)) {
@@ -40,22 +42,12 @@ async function getImageHash(imageBuffer, blockhashSize = 256, format = 'hex') {
   }
 }
 
-function multicoreGetImageHash(...getHashArgs) {
-  return new Promise((resolve, reject) => {
-    const child = child_process.fork(`${__dirname}/cli.js`, getHashArgs, {
-      silent: true,
-    })
-    child.stdout.on('data', function(m) {
-      resolve(JSON.parse(m.toString()))
-    })
-    child.stdout.on('exit', function(m) {
-      // If promise is already resolved, rejection won't fire
-      reject(m.toString())
-    })
-  })
-}
+var workersManager = false
 
 module.exports = {
-  hash: multicoreGetImageHash,
+  hash: function() {
+    if (!workersManager) workersManager = WorkersManager()
+    return workersManager.hash(...arguments)
+  },
   syncHash: getImageHash
 }

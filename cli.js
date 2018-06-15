@@ -3,8 +3,10 @@ const imageHash = require('./index')
 
 const args = process.argv.splice(2)
 
-imageHash.syncHash(...args).then(res => {
+imageHash.hash(...args).then(res => {
   process.stdout.write(JSON.stringify(res))
+  process.exit(0)
 }).catch(err => {
   process.stdout.write(JSON.stringify(err))
+  process.exit(0)
 })
