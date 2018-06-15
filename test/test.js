@@ -107,5 +107,16 @@ it('should accept Buffer input', function() {
   const hash = imageHash.hash(buffer);
   return hash.then(res => {
     assert.isNotNull(res.hash);
+    assert.notEqual(typeof res.hash, 'undefined');
   });
+});
+
+it('Buffer input should be the same as file path input', function() {
+  const h1 = imageHash.hash(__dirname + '/files/absolut1', 64);
+  const h2 = imageHash.hash(fs.readFileSync(__dirname + '/files/absolut1'), 64);
+  return Promise
+    .all([h1, h2])
+    .then((res) => {
+      assert.equal(res[0].hash, res[1].hash);
+    });
 });

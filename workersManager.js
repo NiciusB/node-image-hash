@@ -31,7 +31,9 @@ module.exports = function() {
     hash: function(...hashParams) {
       return new Promise((resolve, reject) => {
         const worker = this.getWorker()
+        worker.queueSize++
         const id = uuidv4()
+
         const listenForResponse = (response) => {
           if (response.id != id) return true
           worker.process.removeListener('message', listenForResponse)
@@ -46,9 +48,11 @@ module.exports = function() {
         worker.process.on('message', listenForResponse)
         worker.process.on('exit', listenForExit)
 
-        worker.queueSize++
+        var decodeBuffer = Buffer.isBuffer(hashParams[0])
+        if (decodeBuffer) hashParams[0] = hashParams[0].toString('base64')
         worker.process.send({
           id,
+          decodeBuffer,
           hashParams
         })
       })
