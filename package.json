@@ -30,6 +30,7 @@
     "mocha": "^2.4.5"
   },
   "dependencies": {
+    "@rauschma/stringio": "^1.4.0",
     "imghash": "0.0.3"
   }
 }
