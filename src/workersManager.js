@@ -4,12 +4,13 @@ const uuidv4 = require('uuid/v4')
 
 module.exports = {
   workers: [],
+  maxWorkers: os.cpus().length,
   addNewWorker: function() {
     const worker = {
       queueSize: 0,
       idList: {},
       process: child_process.fork(`${__dirname}/worker.js`, [], {
-        silent: true,
+        execArgv: [],
       })
     }
 
@@ -31,7 +32,7 @@ module.exports = {
     return worker
   },
   getWorker: function () {
-    if (this.workers.length < os.cpus().length) {
+    if (this.workers.length < this.maxWorkers) {
       return this.addNewWorker()
     } else {
       return this.workers.sort((a, b) => a.queueSize > b.queueSize)[0]
