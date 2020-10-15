@@ -14,7 +14,12 @@ module.exports = async function(imageBuffer, blockhashSize = 64, format = 'hex')
   }
 
   try {
-    const hash = await imghash.hash(imageBuffer, blockhashSize, format)
+    const imghashFormat = format === 'base64' || format === 'latin1' ? 'hex' : format
+    let hash = await imghash.hash(imageBuffer, blockhashSize, imghashFormat)
+    if (format === 'base64' || format === 'latin1') {
+      hash = Buffer.from(hash, 'hex').toString(format)
+    }
+
     return {
       hash: hash,
       type: `blockhash${blockhashSize}`
@@ -29,6 +34,7 @@ module.exports = async function(imageBuffer, blockhashSize = 64, format = 'hex')
       else if (format === 'base64') hash = hash.digest('base64')
       else hash = hash.digest('hex')
 
+      console.error(error)
       return {
         hash,
         type: 'sha256'
