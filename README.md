@@ -37,3 +37,8 @@ Parameters:
 
 By default, `.hash` generates new node.js processes to calculate the hash.
 .syncHash will calculate the `hash` in the same node.js process (About 2.3x times slower)
+
+##### `.close()`
+Close all underlying workers. If you use the asynchronous hashing algorithm,
+you need to call this at the end of your program to close all currently open
+workers. Otherwise, your program may keep running until manually interrupted.
