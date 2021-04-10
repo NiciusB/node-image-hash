@@ -97,6 +97,20 @@ function hashingTests (hashFunction) {
       expect(typeof res.hash).not.toEqual('undefined')
     })
   })
+
+  test('should match hash snapshots', async () => {
+    const hashHex = await hashFunction(path.join(__dirname, 'files', 'castle1.png'), 16, 'hex')
+    expect(hashHex.hash).toEqual('f6c0ffe0f0f0e020f07cf078e1c0f3c0f387e023e0e707831ff107dd0076007f')
+
+    // const hashLatin = await hashFunction(path.join(__dirname, 'files', 'castle1.png'), 16, 'latin1')
+    // expect(hashLatin.hash).toEqual('')
+
+    const hashBase = await hashFunction(path.join(__dirname, 'files', 'castle1.png'), 16, 'base64')
+    expect(hashBase.hash).toEqual('9sD/4PDw4CDwfPB44cDzwPOH4CPg5weDH/EH3QB2AH8=')
+
+    const hashBinary = await hashFunction(path.join(__dirname, 'files', 'castle1.png'), 16, 'binary')
+    expect(hashBinary.hash).toEqual('1111011011000000111111111110000011110000111100001110000000100000111100000111110011110000011110001110000111000000111100111100000011110011100001111110000000100011111000001110011100000111100000110001111111110001000001111101110100000000011101100000000001111111')
+  })
 }
 
 describe('Child processes hashing', () => {
