@@ -9,5 +9,3 @@ jobs:
       run: npm i
     - name: Run tests
       run: npm run test
-    - name: Run speed tests, just for fun and to have historical data
-      run: npm run speedtest
