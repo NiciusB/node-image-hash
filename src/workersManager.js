@@ -1,10 +1,9 @@
 const child_process = require('child_process')
 const os = require('os')
-const uuidv4 = require('uuid/v4')
 
 module.exports = {
   workers: [],
-  maxWorkers: os.cpus().length,
+  maxWorkers: Math.max(1, os.cpus().length - 1),
   addNewWorker: function() {
     const worker = {
       queueSize: 0,
@@ -35,14 +34,14 @@ module.exports = {
     if (this.workers.length < this.maxWorkers) {
       return this.addNewWorker()
     } else {
-      return this.workers.sort((a, b) => a.queueSize > b.queueSize)[0]
+      return this.workers.sort((a, b) => a.queueSize > b.queueSize ? 1 : -1)[0]
     }
   },
   hash: function(...hashParams) {
     return new Promise((resolve, reject) => {
       const worker = this.getWorker()
       worker.queueSize++
-      const id = uuidv4()
+      const id = Math.random() + ''
 
       worker.idList[id] = {resolve, reject}
 

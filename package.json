@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "@rauschma/stringio": "^1.4.0",
-    "imghash": "0.0.3",
-    "uuid": "^3.2.1"
+    "imghash": "0.0.3"
   }
 }

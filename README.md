@@ -36,7 +36,7 @@ Parameters:
 ##### `.syncHash(filepath[, bits][, format])`
 
 By default, `.hash` generates new node.js processes to calculate the hash.
-.syncHash will calculate the `hash` in the same node.js process (About 2.3x times slower)
+.syncHash will calculate the `hash` in the same node.js process (About 2.3x times slower, depending on your CPU)
 
 ##### `.close()`
 Close all underlying workers. If you use the asynchronous hashing algorithm,

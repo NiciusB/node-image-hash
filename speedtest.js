@@ -27,6 +27,7 @@ async function test() {
     console.log('Sync: ' + timer.diff() / 1000000 + 'ms');
   })
 
+  imageHash.close()
 }
 
 test()
