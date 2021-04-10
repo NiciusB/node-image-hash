@@ -4,7 +4,8 @@
   "description": "Perceptual image hash for node.js",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "speedtest": "node test/speedtest.js"
   },
   "repository": {
     "type": "git",
