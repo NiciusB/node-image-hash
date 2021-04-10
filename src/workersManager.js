@@ -1,28 +1,38 @@
-const child_process = require('child_process')
+const childProcess = require('child_process')
 const os = require('os')
+const path = require('path')
 
 module.exports = {
   workers: [],
   maxWorkers: Math.max(1, os.cpus().length - 1),
-  addNewWorker: function() {
+  addNewWorker: function () {
     const worker = {
       queueSize: 0,
       idList: {},
-      process: child_process.fork(`${__dirname}/worker.js`, [], {
-        execArgv: [],
+      process: childProcess.fork(path.join(__dirname, 'worker.js'), [], {
+        execArgv: []
       })
     }
 
     worker.process.on('message', response => {
       worker.queueSize--
-      if (!worker.idList[response.id]) return console.error('No id found in worker idList')
-      worker.idList[response.id].resolve(response.result)
+      if (!worker.idList[response.id]) {
+        console.error('[workersManager] No id found in worker idList')
+        return
+      }
+
+      if (response.errorMessage) {
+        worker.idList[response.id].reject(response.errorMessage)
+      } else {
+        worker.idList[response.id].resolve(response.result)
+      }
+
       delete worker.idList[response.id]
     })
 
     worker.process.on('exit', error => {
       this.workers.splice(this.workers.indexOf(worker), 1)
-      for(key in worker.idList) {
+      for (const key in worker.idList) {
         worker.idList[key].reject(error)
       }
     })
@@ -37,15 +47,15 @@ module.exports = {
       return this.workers.sort((a, b) => a.queueSize > b.queueSize ? 1 : -1)[0]
     }
   },
-  hash: function(...hashParams) {
+  hash: function (...hashParams) {
     return new Promise((resolve, reject) => {
       const worker = this.getWorker()
       worker.queueSize++
       const id = Math.random() + ''
 
-      worker.idList[id] = {resolve, reject}
+      worker.idList[id] = { resolve, reject }
 
-      var decodeBuffer = Buffer.isBuffer(hashParams[0])
+      const decodeBuffer = Buffer.isBuffer(hashParams[0])
       if (decodeBuffer) hashParams[0] = hashParams[0].toString('base64')
       worker.process.send({
         id,
@@ -54,10 +64,13 @@ module.exports = {
       })
     })
   },
-  // Close all workers
-  close: function() {
+
+  /**
+   * Close all workers
+   */
+  close: function () {
     this.workers.forEach(worker => {
-      worker.process.kill('SIGINT'); // Terminate the process.
-    });
+      worker.process.kill('SIGINT') // Terminate the process.
+    })
   }
 }

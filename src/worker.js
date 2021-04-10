@@ -10,7 +10,7 @@ process.on('message', (content) => {
   }).catch(err => {
     process.send({
       id: content.id,
-      result: err
+      errorMessage: err.message
     })
   })
-});
+})

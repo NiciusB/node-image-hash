@@ -2,10 +2,10 @@ const calculateHash = require('./src/calculateHash')
 const workersManager = require('./src/workersManager')
 
 module.exports = {
-  hash: function() {
+  hash: function () {
     return workersManager.hash(...arguments)
   },
-  close: function() {
+  close: function () {
     workersManager.close()
   },
   syncHash: calculateHash
