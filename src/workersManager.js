@@ -54,5 +54,11 @@ module.exports = {
         hashParams
       })
     })
+  },
+  // Close all workers
+  close: function() {
+    this.workers.forEach(worker => {
+      worker.process.kill('SIGINT'); // Terminate the process.
+    });
   }
 }

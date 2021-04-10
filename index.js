@@ -5,5 +5,8 @@ module.exports = {
   hash: function() {
     return workersManager.hash(...arguments)
   },
+  close: function() {
+    workersManager.close()
+  },
   syncHash: calculateHash
 }

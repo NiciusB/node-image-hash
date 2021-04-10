@@ -24,7 +24,7 @@ imageHash
 
 ##### `.hash(filepath[, bits][, format])`
 
-Returns: ES6 `Promise`, resolved returns hash string in specified format and length (eg. `83c3d381c38985a5`)
+Returns: ES6 `Promise`, resolved returns hash string in specified format and length (e.g. `83c3d381c38985a5`)
 
 Parameters:
 
@@ -35,5 +35,10 @@ Parameters:
 
 ##### `.syncHash(filepath[, bits][, format])`
 
-By default .hash generates new node.js processes to calculate the hash.
-.syncHash will calculate the hash in the same node.js process (About 2.3x times slower)
+By default, `.hash` generates new node.js processes to calculate the hash.
+.syncHash will calculate the `hash` in the same node.js process (About 2.3x times slower)
+
+##### `.close()`
+Close all underlying workers. If you use the asynchronous hashing algorithm,
+you need to call this at the end of your program to close all currently open
+workers. Otherwise, your program may keep running until manually interrupted.
