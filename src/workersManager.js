@@ -22,7 +22,7 @@ module.exports = {
       }
 
       if (response.errorMessage) {
-        worker.idList[response.id].reject(response.errorMessage)
+        worker.idList[response.id].reject(new Error(response.errorMessage))
       } else {
         worker.idList[response.id].resolve(response.result)
       }
