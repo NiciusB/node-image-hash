@@ -1,6 +1,6 @@
 {
   "name": "node-image-hash",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "Perceptual image hash for node.js",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,8 @@
   "keywords": [
     "node",
     "image",
-    "hash"
+    "hash",
+    "perceptual"
   ],
   "engines": {
     "node": ">=8.x.x"
